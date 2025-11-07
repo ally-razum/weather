@@ -5,25 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Neucha&display=swap" rel="stylesheet">
     <script defer src="script/index.js"></script>
     <title>Weather</title>
 </head>
 <body class="page">
     <header>
-        <h1> это header</h1>
+        <h1>Погода в твоем городе</h1>
     </header>
     <main>
-        <h2> это main</h2>
+        
         <section>
             <form id="weather-form" class="form">
-                <input type="text" name="city" placeholder="Type here...">
-                <button type="submit">Search</button>
+                <input type="text" name="city" placeholder="Введите город">
+                <button type="submit">Найти</button>
             </form>
         </section>
         <section class="weather">
-            <h3> Погода в ...</h3>
+            <h3> Введите город, чтобы узнать погоду 🌤️</h3>
+            <div class="weather__info" id="result"></div>
         </section>
-    </main>
-    
+    </main>    
 </body>
 </html>

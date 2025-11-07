@@ -1,3 +1,133 @@
-.page {
-    background-color: rgb(156, 200, 250);
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body.page {
+  font-family: "Neucha", sans-serif;
+  background: linear-gradient(135deg, #202840, #3a4a6a);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+header {
+  width: 100%;
+  text-align: center;
+  padding: 20px 0;
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+header h1 {
+  font-size: 2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.form input {
+  padding: 10px 15px;
+  width: 70%;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.form input:focus {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.form button {
+  background-color: #10a7ff;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.form button:hover {
+  background-color: #00c6ff;
+  transform: scale(1.05);
+}
+
+.weather {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.weather:hover {
+  transform: translateY(-3px);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.weather h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.weather__info {
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.city-name,
+.temp,
+.feels-like,
+.humidity {
+    color: yellow; /* твой желаемый цвет */
+}
+
+.weather-desc {
+    color: white; /* остальной текст белый */
+}
+
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  .form {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .form input {
+    width: 100%;
+  }
+
+  .form button {
+    width: 100%;
+  }
 }
