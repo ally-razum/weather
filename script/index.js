@@ -1,11 +1,52 @@
 console.log ("hi weather!")
 const result = document.getElementById('result');
-const hint = document.querySelector('h3'); // находим подсказку
+const hint = document.querySelector('h3'); // Введите город, чтобы узнать погоду 🌤️
+const errorMessage = document.getElementById('error-message');
+
+//функция очистки всех блоков текста
+function clearInputAfterTime(input = null, errorBlock = null, time = 3000) {
+  setTimeout(() => {
+    if (errorBlock) errorBlock.textContent = '';
+    if (input) {
+      input.value = '';
+      input.focus();
+    }
+  }, time);
+}
+
+
 
 document.getElementById('weather-form').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const city = e.target.city.value.trim();
-  if (!city) return;
+
+  const input = e.target.city;
+  const city = input.value.trim(); // теперь это строка
+
+    // очищаем предыдущий результат перед новой попыткой
+  result.innerHTML = 'Введите город, чтобы узнать погоду 🌤️';
+  errorMessage.textContent = '';
+
+  // регулярка для проверки: только буквы и дефисы (поддерживает кириллицу)
+  const cityRegex = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/;
+
+  if (!city) {   
+    errorMessage.textContent = ('Введите название города! 🤔');
+     clearInputAfterTime(input, errorMessage);
+    return;
+  }
+
+   if (city.length < 2) {    
+    errorMessage.textContent = ('Слишком короткое название города 😅');
+     clearInputAfterTime(input, errorMessage);
+    return;
+  }
+
+  if (!cityRegex.test(city)) {    
+    errorMessage.textContent =('Название города может содержать только буквы!😏');
+     clearInputAfterTime(input, errorMessage);
+    return;
+  }
+
 
   const apiKey = '85c36bd9c5f37754f9698d0f764c9fec'; // твой ключ
 
@@ -13,7 +54,7 @@ document.getElementById('weather-form').addEventListener('submit', async (e) => 
 
   try {
     const response = await fetch(url);
-    if (!response.ok) throw new Error('Ошибка сети');
+    if (!response.ok) throw new Error('Город не найден 😕 пе пе 😛');
     const data = await response.json();
     console.log(data); // здесь уже получаем реальный объект с погодой
     
@@ -26,10 +67,22 @@ document.getElementById('weather-form').addEventListener('submit', async (e) => 
       <p>Влажность: <span class="humidity">${data.main.humidity}%</span></p>
 
       `;
-      hint.remove();
-      e.target.city.value = '';
-
+    hint.remove();
   } catch (error) {
-    console.error(error);
+    console.error(error);   
+    errorMessage.textContent = error.message;
+    hint.remove();
+    result.innerHTML = `
+      <h3><span class="city-name">Сам ты ${city} 😅</span></h3>    
+    `;
+
+    setTimeout(() => {
+      result.innerHTML = 'Введите город, чтобы узнать погоду 🌤️';
+    }, 3000);
+    
+    clearInputAfterTime(input, errorMessage);    
+ 
+  } finally {
+    e.target.city.value = '';
   }
 });
