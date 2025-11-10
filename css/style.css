@@ -126,6 +126,13 @@ main {
   font-weight: bold;
 }
 
+.country-flag {
+  vertical-align: middle;
+  width: 24px;
+  height: 18px;
+  border-radius: 2px;
+}
+
 .temp,
 .feels-like,
 .humidity,

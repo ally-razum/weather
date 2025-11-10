@@ -98,24 +98,28 @@ document.getElementById('weather-form').addEventListener('submit', async (e) => 
 
     const countryCode = data.sys.country;
     const countryName = countryNames[countryCode] || countryCode; // если нет в словаре — оставить код
+    
+    const countryCodeflag = data.sys.country.toLowerCase(); // RU → ru
+    const flagUrl = `https://flagcdn.com/w20/${countryCodeflag}.png`; // ширина 20px
+
 
     
     result.innerHTML = 
       `
-      <h2> <span class="city-name">${data.name}, ${countryName}</span></h2>   
-       <img 
+      <h2> 
+        <span class="city-name">${data.name}, ${countryName}</span>
+        <img src="${flagUrl}" alt="${data.sys.country} флаг" class="country-flag">
+      </h2>   
+      <img 
       src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" 
       alt="${data.weather[0].description}" 
-      class="weather-icon"
-    >
+      class="weather-icon">
+
       <p><span class="weather-desc">${data.weather[0].description}</span></p>
       <p>Температура: <span class="temp">${Math.round(data.main.temp)}°C</span></p>
       <p>Ощущается как: <span class="feels-like">${Math.round(data.main.feels_like)}°C</span></p>
       <p>Влажность: <span class="humidity">${data.main.humidity}%</span></p>
-      <p>Ветер: <span class="wind">${data.wind.speed} м/с</span></p>
-
-      
-
+      <p>Ветер: <span class="wind">${data.wind.speed} м/с</span></p>    
       `;
 
     hint.remove();
