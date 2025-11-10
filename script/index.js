@@ -3,6 +3,14 @@ const result = document.getElementById('result');
 const hint = document.getElementById('hint'); // Введите город, чтобы узнать погоду 🌤️
 const errorMessage = document.getElementById('error-message');
 
+const now = new Date();
+const options = { 
+  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+  hour: '2-digit', minute: '2-digit'
+};
+const formattedDate = now.toLocaleDateString('ru-RU', options);
+
+
 const countryNames = {
   RU: 'Россия',
   UA: 'Украина',
@@ -40,8 +48,6 @@ const countryNames = {
   NZ: 'Новая Зеландия',
 };
 
-
-//функция очистки всех блоков текста
 function clearInputAfterTime(input = null, errorBlock = null, time = 3000) {
   setTimeout(() => {
     if (errorBlock) errorBlock.textContent = '';
@@ -58,13 +64,13 @@ document.getElementById('weather-form').addEventListener('submit', async (e) => 
   e.preventDefault();
 
   const input = e.target.city;
-  const city = input.value.trim(); // теперь это строка
+  const city = input.value.trim(); 
 
-    // очищаем предыдущий результат перед новой попыткой
+  // очистка результата перед новой попыткой
   result.innerHTML = 'Введите город, чтобы узнать погоду 🌤️';
   errorMessage.textContent = '';
 
-  // регулярка для проверки: только буквы и дефисы (поддерживает кириллицу)
+  // регулярка проверки только буквы и дефисы 
   const cityRegex = /^[a-zA-Zа-яА-ЯёЁ\s-]+$/;
 
   if (!city) {   
@@ -86,7 +92,7 @@ document.getElementById('weather-form').addEventListener('submit', async (e) => 
   }
 
 
-  const apiKey = '85c36bd9c5f37754f9698d0f764c9fec'; // твой ключ
+  const apiKey = '85c36bd9c5f37754f9698d0f764c9fec'; //  ключ который хз куда еще написать
 
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric&lang=ru`;
 
@@ -94,13 +100,13 @@ document.getElementById('weather-form').addEventListener('submit', async (e) => 
     const response = await fetch(url);
     if (!response.ok) throw new Error('Город не найден 😕');
     const data = await response.json();
-    console.log(data); // здесь уже получаем реальный объект с погодой
+    console.log(data); // здесь уже реальный объект с погодой =)
 
     const countryCode = data.sys.country;
     const countryName = countryNames[countryCode] || countryCode; // если нет в словаре — оставить код
     
-    const countryCodeflag = data.sys.country.toLowerCase(); // RU → ru
-    const flagUrl = `https://flagcdn.com/w20/${countryCodeflag}.png`; // ширина 20px
+    const countryCodeflag = data.sys.country.toLowerCase(); // ru тк для флага в юрл нужно ловеркейс
+    const flagUrl = `https://flagcdn.com/w20/${countryCodeflag}.png`; // ширина 20px шоб мелкая была
 
 
     
@@ -114,12 +120,29 @@ document.getElementById('weather-form').addEventListener('submit', async (e) => 
       src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" 
       alt="${data.weather[0].description}" 
       class="weather-icon">
-
+      <p class="weather-date">${formattedDate}</p>
       <p><span class="weather-desc">${data.weather[0].description}</span></p>
-      <p>Температура: <span class="temp">${Math.round(data.main.temp)}°C</span></p>
-      <p>Ощущается как: <span class="feels-like">${Math.round(data.main.feels_like)}°C</span></p>
-      <p>Влажность: <span class="humidity">${data.main.humidity}%</span></p>
-      <p>Ветер: <span class="wind">${data.wind.speed} м/с</span></p>    
+
+
+      <table class="weather-table">
+          <tr>
+            <td>Температура:</td>
+            <td>${Math.round(data.main.temp)}°C</td>
+          </tr>
+          <tr>
+            <td>Ощущается как:</td>
+            <td>${Math.round(data.main.feels_like)}°C</td>
+          </tr>
+          <tr>
+            <td>Влажность:</td>
+            <td>${data.main.humidity}%</td>
+          </tr>
+          <tr>
+            <td>Ветер:</td>
+            <td>${data.wind.speed} м/с</td>
+          </tr>
+      </table>
+
       `;
 
     hint.remove();
@@ -142,3 +165,4 @@ document.getElementById('weather-form').addEventListener('submit', async (e) => 
     e.target.city.value = '';
   }
 });
+
